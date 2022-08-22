@@ -11,7 +11,7 @@
     <groupId>com.pucpr</groupId>
     <artifactId>clinilog-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>pucbay</name>
+    <name>clinilog-backend</name>
     <description>Backend project for clinilog</description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -4,13 +4,24 @@ package com.pucpr.backend.controller.service;
 import com.pucpr.backend.model.tables.User;
 import com.pucpr.backend.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public abstract class UserService implements CrudInterface<User> {
+public class UserService implements CrudInterface<User> {
+
+    private static UserService userService;
+
+    @Bean
+    public static UserService getUserService() {
+        if(UserService.userService == null) {
+            UserService.userService = new UserService();
+        }
+        return UserService.userService;
+    }
 
     @Autowired
     private UserRepository userRepository;

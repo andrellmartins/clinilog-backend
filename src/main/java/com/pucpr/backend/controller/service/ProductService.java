@@ -1,7 +1,6 @@
 package com.pucpr.backend.controller.service;
 
 
-import com.pucpr.backend.model.objects.ProductSimplified;
 import com.pucpr.backend.model.tables.Product;
 import com.pucpr.backend.model.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,10 +45,6 @@ public class ProductService
     @Override
     public long count() {
         return productRepository.count();
-    }
-
-    public List<ProductSimplified> getTitleQuantity() {
-        return productRepository.getTitleQuantity();
     }
 
 }

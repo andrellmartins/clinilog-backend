@@ -2,7 +2,6 @@ package com.pucpr.backend.controller.resource;
 
 
 import com.pucpr.backend.controller.service.ProductService;
-import com.pucpr.backend.model.objects.ProductSimplified;
 import com.pucpr.backend.model.tables.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +22,7 @@ public class ProductResource {
         return productService.findById(id);
     }
 
-    @GetMapping(value = "/list")
-    public List<ProductSimplified> getProductList() {
-        return productService.getTitleQuantity();
-    }
-
-    @GetMapping(value = "/")
+     @GetMapping(value = "/")
     public List<Product> getAllProducts() {
         return productService.findAll();
     }
