@@ -1,10 +1,9 @@
 package com.pucpr.backend.model.tables;
 
-
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
-
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -17,6 +16,10 @@ public class Product implements Serializable {
     private boolean isMed;
     private Long id_lote;
     private String id_func_cadastro;
+    @Column(nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
+    private String data_cadastro;
     private boolean deletado;
 
 
@@ -58,6 +61,14 @@ public class Product implements Serializable {
 
     public void setId_func_cadastro(String id_func_cadastro) {
         this.id_func_cadastro = id_func_cadastro;
+    }
+
+    public String getData_cadastro() {
+        return data_cadastro;
+    }
+
+    public void setData_cadastro(String data_cadastro) {
+        this.data_cadastro = data_cadastro;
     }
 
     public boolean isDeletado() { return deletado; }

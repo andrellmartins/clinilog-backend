@@ -1,5 +1,6 @@
 package com.pucpr.backend.model.tables;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -16,6 +17,9 @@ public class Batch {
     private String validade;
     private Long qtd_inicial;
     private Long qtd_disponivel;
+    @Column(nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
     private String data_cadastro;
     private String fabricante;
     private String id_func_cadastro;

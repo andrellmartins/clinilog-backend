@@ -5,13 +5,13 @@ import javax.persistence.*;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Patient {
+public class Pharma  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long id_pessoa;
-    private long id_convenio;
+    private int crf;
+    private String crf_uf;
 
     public Long getId() {
         return id;
@@ -21,20 +21,19 @@ public class Patient {
         this.id = id;
     }
 
-    public Long getId_pessoa() {
-        return id_pessoa;
+    public int getCrf() {
+        return crf;
     }
 
-    public void setId_pessoa(Long id_pessoa) {
-        this.id_pessoa = id_pessoa;
+    public void setCrf(int crf) {
+        this.crf = crf;
     }
 
-    public long getId_convenio() {
-        return id_convenio;
+    public String getCrf_uf() {
+        return crf_uf;
     }
 
-    public void setId_convenio(long id_convenio) {
-        this.id_convenio = id_convenio;
+    public void setCrf_uf(String crf_uf) {
+        this.crf_uf = crf_uf;
     }
-
 }

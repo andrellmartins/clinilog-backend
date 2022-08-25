@@ -27,12 +27,10 @@ public class User implements Serializable {
     private String firstName;
     @NotEmpty
     private String lastName;
-
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date dtCreation;
-
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date dtUpdate;
