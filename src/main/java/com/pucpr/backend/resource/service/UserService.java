@@ -1,4 +1,4 @@
-package com.pucpr.backend.controller.service;
+package com.pucpr.backend.resource.service;
 
 
 import com.pucpr.backend.model.tables.User;

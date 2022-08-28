@@ -1,4 +1,4 @@
-package com.pucpr.backend.controller.config;
+package com.pucpr.backend.config;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.pucpr.backend.controller.service.TokenAuthService;
+import com.pucpr.backend.resource.service.TokenAuthService;
 import com.pucpr.backend.model.objects.UserLogin;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,11 +1,10 @@
-package com.pucpr.backend.controller.service;
+package com.pucpr.backend.resource.service;
 
 
 import com.pucpr.backend.model.repository.PersonRepository;
 import com.pucpr.backend.model.tables.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 

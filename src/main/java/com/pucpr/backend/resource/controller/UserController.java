@@ -1,6 +1,6 @@
-package com.pucpr.backend.controller.resource;
+package com.pucpr.backend.resource.controller;
 
-import com.pucpr.backend.controller.service.UserService;
+import com.pucpr.backend.resource.service.UserService;
 import com.pucpr.backend.model.tables.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-public class UserResource {
+public class UserController {
 
     @Autowired
     private UserService userService;

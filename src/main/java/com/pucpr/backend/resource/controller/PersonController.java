@@ -1,10 +1,8 @@
-package com.pucpr.backend.controller.resource;
+package com.pucpr.backend.resource.controller;
 
 
-import com.pucpr.backend.controller.service.PersonService;
-import com.pucpr.backend.controller.service.ProductService;
+import com.pucpr.backend.resource.service.PersonService;
 import com.pucpr.backend.model.tables.Person;
-import com.pucpr.backend.model.tables.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,18 +11,18 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/person")
-public class PersonResource {
+public class PersonController {
 
     @Autowired
     private PersonService personService;
 
     @GetMapping(value = "/{id}")
-    public Object getPersonById(@PathVariable long id) {
+    public Object getById(@PathVariable long id) {
         return personService.findById(id);
     }
 
     @GetMapping(value = "/")
-    public List<Person> getAllPerson() {
+    public List<Person> getAll() {
         return personService.findAll();
     }
 

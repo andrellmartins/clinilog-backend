@@ -1,7 +1,7 @@
-package com.pucpr.backend.controller.resource;
+package com.pucpr.backend.resource.controller;
 
 
-import com.pucpr.backend.controller.service.ProductService;
+import com.pucpr.backend.resource.service.ProductService;
 import com.pucpr.backend.model.tables.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,19 +11,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/product")
-public class ProductResource {
+public class ProductController {
 
     @Autowired
     private ProductService productService;
 
 
     @GetMapping(value = "/{id}")
-    public Object getProductById(@PathVariable long id) {
+    public Object getById(@PathVariable long id) {
         return productService.findById(id);
     }
 
      @GetMapping(value = "/")
-    public List<Product> getAllProducts() {
+    public List<Product> getAll() {
         return productService.findAll();
     }
 

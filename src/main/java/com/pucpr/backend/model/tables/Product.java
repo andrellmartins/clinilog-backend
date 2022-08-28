@@ -4,6 +4,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -21,6 +22,8 @@ public class Product implements Serializable {
     @CreatedDate
     private String data_cadastro;
     private boolean deletado;
+    @OneToMany(mappedBy="produto")
+    private List<Batch> lote;
 
 
     public Long getId() {

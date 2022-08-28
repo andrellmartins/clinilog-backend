@@ -1,4 +1,4 @@
-package com.pucpr.backend.controller.config;
+package com.pucpr.backend.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

@@ -1,4 +1,4 @@
-package com.pucpr.backend.controller.config;
+package com.pucpr.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

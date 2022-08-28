@@ -24,6 +24,9 @@ public class Batch {
     private String fabricante;
     private String id_func_cadastro;
     private boolean deletado;
+    @ManyToOne
+    @JoinColumn(name="id_produto")
+    private Product produto;
 
 
     public Long getId() {
