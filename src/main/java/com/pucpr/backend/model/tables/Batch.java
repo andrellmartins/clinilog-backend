@@ -2,13 +2,11 @@ package com.pucpr.backend.model.tables;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 
 @Entity
+@Table(name="Lote")
 @EntityListeners(AuditingEntityListener.class)
 public class Batch  {
 

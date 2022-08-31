@@ -2,9 +2,10 @@ package com.pucpr.backend.model.tables;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
-import java.util.Date;
+
 
 @Entity
+@Table(name="Pessoa")
 @EntityListeners(AuditingEntityListener.class)
 public class Person {
 
