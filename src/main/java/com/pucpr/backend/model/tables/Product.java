@@ -4,11 +4,13 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Product implements Serializable {
+public class Product  {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -20,11 +22,28 @@ public class Product implements Serializable {
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    private String data_cadastro;
+    private Date data_cadastro;
     private boolean deletado;
-    @OneToMany(mappedBy="produto")
+    @OneToMany(mappedBy = "produto")
     private List<Batch> lote;
+    @OneToOne(mappedBy = "produto")
+    private Medicine medicamento;
 
+    public Medicine getMedicamento() {
+        return medicamento;
+    }
+
+    public void setMedicamento(Medicine medicamento) {
+        this.medicamento = medicamento;
+    }
+
+    public void setLote(List<Batch> lote) {
+        this.lote = lote;
+    }
+
+    public List<Batch> getLote() {
+        return lote;
+    }
 
     public Long getId() {
         return id;
@@ -66,17 +85,19 @@ public class Product implements Serializable {
         this.id_func_cadastro = id_func_cadastro;
     }
 
-    public String getData_cadastro() {
+    public Date getData_cadastro() {
         return data_cadastro;
     }
 
-    public void setData_cadastro(String data_cadastro) {
+    public void setData_cadastro(Date data_cadastro) {
         this.data_cadastro = data_cadastro;
     }
 
     public boolean isDeletado() { return deletado; }
 
     public void setDeletado(boolean deletado) { this.deletado = deletado; }
+
+
 
 
 }

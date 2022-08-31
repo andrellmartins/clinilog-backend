@@ -11,6 +11,8 @@ public class Insurance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String convenio;
+    @OneToOne
+    private Patient paciente;
 
     public Long getId() {
         return id;
@@ -26,5 +28,13 @@ public class Insurance {
 
     public void setConvenio(String convenio) {
         this.convenio = convenio;
+    }
+
+    public Patient getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Patient paciente) {
+        this.paciente = paciente;
     }
 }

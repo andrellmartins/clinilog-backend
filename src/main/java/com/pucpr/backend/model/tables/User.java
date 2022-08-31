@@ -34,6 +34,8 @@ public class User implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date dtUpdate;
+    @OneToOne
+    private Person pessoa;
 
     public User() {
     }
@@ -120,5 +122,13 @@ public class User implements Serializable {
         result = 31 * result + (dtCreation != null ? dtCreation.hashCode() : 0);
         result = 31 * result + (dtUpdate != null ? dtUpdate.hashCode() : 0);
         return result;
+    }
+
+    public Person getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Person pessoa) {
+        this.pessoa = pessoa;
     }
 }

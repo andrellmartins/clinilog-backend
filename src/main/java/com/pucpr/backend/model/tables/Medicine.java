@@ -14,6 +14,8 @@ public class Medicine {
     private Long id_produto;
     private String principio_ativo;
     private boolean deletado;
+    @OneToOne
+    private Product produto;
 
 
     public Long getId() {
@@ -44,4 +46,11 @@ public class Medicine {
 
     public void setDeletado(boolean deletado) { this.deletado = deletado; }
 
+    public Product getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Product produto) {
+        this.produto = produto;
+    }
 }

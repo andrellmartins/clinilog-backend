@@ -6,40 +6,37 @@ import javax.persistence.*;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Employee extends Person{
+public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long id_pessoa;
-    private Long id_cargo;
     private int pis;
     private float salario;
+    @OneToOne
+    private Person pessoa;
+    @OneToOne(mappedBy = "func")
+    private Position cargo;
+    @OneToOne(mappedBy = "func")
+    private Doctor medico;
+    @OneToOne(mappedBy = "func")
+    private Pharma farma;
 
-    @Override
+
+    public Person getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Person pessoa) {
+        this.pessoa = pessoa;
+    }
+
     public Long getId() {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getId_pessoa() {
-        return id_pessoa;
-    }
-
-    public void setId_pessoa(Long id_pessoa) {
-        this.id_pessoa = id_pessoa;
-    }
-
-    public Long getId_cargo() {
-        return id_cargo;
-    }
-
-    public void setId_cargo(Long id_cargo) {
-        this.id_cargo = id_cargo;
     }
 
     public int getPis() {
@@ -57,4 +54,30 @@ public class Employee extends Person{
     public void setSalario(float salario) {
         this.salario = salario;
     }
+
+    public Position getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(Position cargo) {
+        this.cargo = cargo;
+    }
+
+    public Doctor getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Doctor medico) {
+        this.medico = medico;
+    }
+
+    public Pharma getFarma() {
+        return farma;
+    }
+
+    public void setFarma(Pharma farma) {
+        this.farma = farma;
+    }
+
+
 }

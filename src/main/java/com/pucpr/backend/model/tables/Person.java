@@ -2,6 +2,7 @@ package com.pucpr.backend.model.tables;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -17,6 +18,12 @@ public class Person {
     private String data_nasc;
     private String sexo;
     private boolean deletado;
+    @OneToOne(mappedBy = "pessoa")
+    private Employee employee;
+    @OneToOne(mappedBy = "pessoa")
+    private Patient paciente;
+    @OneToOne(mappedBy = "pessoa")
+    private User usuario;
 
 
     public Long getId() {
@@ -83,6 +90,30 @@ public class Person {
         this.deletado = deleted;
     }
 
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public Patient getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Patient paciente) {
+        this.paciente = paciente;
+    }
+
+    public User getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(User usuario) {
+        this.usuario = usuario;
+    }
 
 
 }

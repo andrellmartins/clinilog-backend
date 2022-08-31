@@ -4,14 +4,18 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Batch {
+public class Batch  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Long id_produto;
     private String lote;
     private String validade;
@@ -20,14 +24,21 @@ public class Batch {
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    private String data_cadastro;
+    private Date data_cadastro;
     private String fabricante;
     private String id_func_cadastro;
     private boolean deletado;
     @ManyToOne
-    @JoinColumn(name="id_produto")
     private Product produto;
 
+
+    public Product getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Product produto) {
+        this.produto = produto;
+    }
 
     public Long getId() {
         return id;
@@ -77,11 +88,11 @@ public class Batch {
         this.qtd_disponivel = qtd_disponivel;
     }
 
-    public String getData_cadastro() {
+    public Date getData_cadastro() {
         return data_cadastro;
     }
 
-    public void setData_cadastro(String data_cadastro) {
+    public void setData_cadastro(Date data_cadastro) {
         this.data_cadastro = data_cadastro;
     }
 

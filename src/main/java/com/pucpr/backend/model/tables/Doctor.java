@@ -13,6 +13,8 @@ public class Doctor {
     private Long id;
     private int crm;
     private String crm_uf;
+    @OneToOne
+    private Employee func;
 
     public Long getId() {
         return id;
@@ -37,4 +39,14 @@ public class Doctor {
     public void setCrm_uf(String crm_uf) {
         this.crm_uf = crm_uf;
     }
+
+    public Employee getFunc() {
+        return func;
+    }
+
+    public void setFunc(Employee func) {
+        this.func = func;
+    }
+
+
 }

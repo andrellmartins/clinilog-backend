@@ -11,6 +11,16 @@ public class Position {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String cargo;
+    @OneToOne
+    private Employee func;
+
+    public Employee getEmployee() {
+        return func;
+    }
+
+    public void setEmployee(Employee func) {
+        this.func = func;
+    }
 
     public Long getId() {
         return id;
@@ -27,4 +37,6 @@ public class Position {
     public void setCargo(String cargo) {
         this.cargo = cargo;
     }
+
+
 }
