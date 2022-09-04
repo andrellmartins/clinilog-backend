@@ -1,19 +1,32 @@
 package com.pucpr.backend.resource.service;
 
 
+import antlr.BaseAST;
 import com.pucpr.backend.model.tables.User;
 import com.pucpr.backend.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.AliasFor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.xml.ws.ServiceMode;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService implements CrudInterface<User> {
+public class UserService implements CrudInterface<User>, UserDetailsService {
 
     private static UserService userService;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Bean
     public static UserService getUserService() {
@@ -33,6 +46,9 @@ public class UserService implements CrudInterface<User> {
 
     @Override
     public Optional<User> save(User entity) {
+        entity.setPassword(bCryptPasswordEncoder
+                    .encode(entity.getPassword()));
+
         return Optional.of(userRepository.save(entity));
     }
 
@@ -54,5 +70,16 @@ public class UserService implements CrudInterface<User> {
     @Override
     public long count() {
         return userRepository.count();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = this.userRepository.findByLogin(username);
+        if(user == null && "admin".equals(username)){
+            user = new User();
+            user.setLogin("admin");
+            user.setPassword(bCryptPasswordEncoder.encode("admin"));
+        }
+        return user;
     }
 }

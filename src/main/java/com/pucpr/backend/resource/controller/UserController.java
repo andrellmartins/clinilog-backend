@@ -13,8 +13,12 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
     private UserService userService;
+
+    public UserController(UserService userService){
+        this.userService = userService;
+    }
+
 
     @GetMapping("")
     public List<User> getUsers() {
@@ -27,7 +31,6 @@ public class UserController {
         userService.save(user);
         return ResponseEntity.ok(user);
     }
-
 
     @PutMapping("")
     public ResponseEntity update(@Valid @RequestBody User user) {
