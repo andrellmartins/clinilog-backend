@@ -2,18 +2,26 @@ package com.pucpr.backend.model.tables;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name="Convenio")
+@Table(
+    name="Convenio",
+    uniqueConstraints = {
+            @UniqueConstraint(name="INSURANCE_UNIQUE_CONVENIO", columnNames = {"convenio"})
+    }
+)
 @EntityListeners(AuditingEntityListener.class)
 public class Insurance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String convenio;
-    @OneToOne
-    private Patient paciente;
+
+    @OneToMany(mappedBy = "convenio")
+    private List<Patient> pacientes;
 
     public Long getId() {
         return id;
@@ -31,11 +39,11 @@ public class Insurance {
         this.convenio = convenio;
     }
 
-    public Patient getPaciente() {
-        return paciente;
+    public List<Patient> getPacientes() {
+        return pacientes;
     }
 
-    public void setPaciente(Patient paciente) {
-        this.paciente = paciente;
+    public void setPacientes(List<Patient> pacientes) {
+        this.pacientes = pacientes;
     }
 }

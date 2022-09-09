@@ -4,6 +4,7 @@ import com.pucpr.backend.resource.service.UserService;
 import com.pucpr.backend.model.tables.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
@@ -15,10 +16,12 @@ public class UserController {
 
     private UserService userService;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     public UserController(UserService userService){
         this.userService = userService;
     }
-
 
     @GetMapping("")
     public List<User> getUsers() {
@@ -28,12 +31,14 @@ public class UserController {
     @PostMapping("")
     public ResponseEntity<User>
     save(@Valid @RequestBody User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userService.save(user);
         return ResponseEntity.ok(user);
     }
 
     @PutMapping("")
     public ResponseEntity update(@Valid @RequestBody User user) {
+
         userService.save(user);
         return ResponseEntity.ok().body(user);
     }

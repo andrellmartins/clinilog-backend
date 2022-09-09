@@ -43,7 +43,7 @@ public class LoginController {
     }
 
     @PostMapping("")
-    public ResponseEntity<String> login(
+    public ResponseEntity<User> login(
         @RequestBody User user
     ) throws JsonProcessingException {
 
@@ -63,7 +63,7 @@ public class LoginController {
             User currentUser = (User) auth.getPrincipal();
             return ResponseEntity.ok()
                     .header(HEADER_STRING,TOKEN_PREFIX + generateJWTToken(currentUser))
-                    .build();
+                    .body(currentUser);
         }else{
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }

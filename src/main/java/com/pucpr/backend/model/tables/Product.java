@@ -17,14 +17,18 @@ public class Product  {
     private String descricao;
     private boolean isMed;
     private Long id_lote;
-    private String id_func_cadastro;
+    @ManyToOne()
+    @JoinColumn(name="id_func_cadastro")
+    private Employee func;
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date data_cadastro;
     private boolean deletado;
+
     @OneToMany(mappedBy = "produto")
     private List<Batch> lote;
+
     @OneToOne(mappedBy = "produto")
     private Medicine medicamento;
 
@@ -76,12 +80,12 @@ public class Product  {
         this.id_lote = id_lote;
     }
 
-    public String getId_func_cadastro() {
-        return id_func_cadastro;
+    public Employee getFunc() {
+        return func;
     }
 
-    public void setId_func_cadastro(String id_func_cadastro) {
-        this.id_func_cadastro = id_func_cadastro;
+    public void setFunc(Employee func) {
+        this.func = func;
     }
 
     public Date getData_cadastro() {

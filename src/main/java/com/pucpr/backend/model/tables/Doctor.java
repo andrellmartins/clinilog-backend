@@ -5,7 +5,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 
 @Entity
-@Table(name="Medico")
+@Table(
+    name="Medico",
+    uniqueConstraints = {
+        @UniqueConstraint(name="DOCTOR_UNIQUE_CRM_UF", columnNames = {"crm","crm_uf"})
+    }
+)
 @EntityListeners(AuditingEntityListener.class)
 public class Doctor {
 
@@ -15,6 +20,7 @@ public class Doctor {
     private int crm;
     private String crm_uf;
     @OneToOne
+    @JoinColumn(name = "id_employee")
     private Employee func;
 
     public Long getId() {

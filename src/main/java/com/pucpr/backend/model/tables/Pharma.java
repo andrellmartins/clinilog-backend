@@ -2,9 +2,15 @@ package com.pucpr.backend.model.tables;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
+import javax.validation.Constraint;
 
 @Entity
-@Table(name="Farmaceutico")
+@Table(
+    name="Farmaceutico",
+    uniqueConstraints = {
+            @UniqueConstraint(name="PHARMA_UNIQUE_CRF_UF",columnNames = {"crf","crf_uf"})
+    }
+)
 @EntityListeners(AuditingEntityListener.class)
 public class Pharma  {
 
@@ -14,6 +20,7 @@ public class Pharma  {
     private int crf;
     private String crf_uf;
     @OneToOne
+    @JoinColumn(name="id_employee")
     private Employee func;
 
     public Long getId() {

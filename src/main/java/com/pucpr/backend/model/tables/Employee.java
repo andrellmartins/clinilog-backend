@@ -3,26 +3,40 @@ package com.pucpr.backend.model.tables;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name="Funcionario")
+@Table(
+        name="Funcionario",
+        uniqueConstraints = {
+                @UniqueConstraint(name="EMPLOYEE_UNIQUE_PIS", columnNames = {"pis"})
+        }
+)
 @EntityListeners(AuditingEntityListener.class)
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int pis;
+    private String pis;
     private float salario;
+
     @OneToOne
+    @JoinColumn(name="id_pessoa")
     private Person pessoa;
-    @OneToOne(mappedBy = "func")
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="id_position")
     private Position cargo;
-    @OneToOne(mappedBy = "func")
+
+    @OneToOne(mappedBy = "func", cascade = CascadeType.ALL)
     private Doctor medico;
-    @OneToOne(mappedBy = "func")
+
+    @OneToOne(mappedBy = "func", cascade = CascadeType.ALL)
     private Pharma farma;
 
+    @OneToMany(mappedBy = "func")
+    private List<Product> product;
 
     public Person getPessoa() {
         return pessoa;
@@ -40,11 +54,11 @@ public class Employee {
         this.id = id;
     }
 
-    public int getPis() {
+    public String getPis() {
         return pis;
     }
 
-    public void setPis(int pis) {
+    public void setPis(String pis) {
         this.pis = pis;
     }
 
@@ -80,5 +94,12 @@ public class Employee {
         this.farma = farma;
     }
 
+    public List<Product> getProduct() {
+        return product;
+    }
+
+    public void setProduct(List<Product> product) {
+        this.product = product;
+    }
 
 }

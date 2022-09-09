@@ -2,10 +2,16 @@ package com.pucpr.backend.model.tables;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Entity
-@Table(name="Pessoa")
+@Table(
+    name="Pessoa",
+    uniqueConstraints = {
+            @UniqueConstraint(name="PERSON_UNIQUE_CPF", columnNames = {"cpf"})
+    }
+)
 @EntityListeners(AuditingEntityListener.class)
 public class Person {
 
@@ -13,17 +19,20 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private int cpf;
+    private String cpf;
     private String ender;
-    private int cep;
-    private String data_nasc;
+    private String cep;
+    private Date data_nasc;
     private String sexo;
     private boolean deletado;
-    @OneToOne(mappedBy = "pessoa")
+
+    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
     private Employee employee;
-    @OneToOne(mappedBy = "pessoa")
+
+    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
     private Patient paciente;
-    @OneToOne(mappedBy = "pessoa")
+
+    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
     private User usuario;
 
 
@@ -43,11 +52,11 @@ public class Person {
         this.nome = name;
     }
 
-    public int getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(int cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
@@ -59,19 +68,19 @@ public class Person {
         this.ender = ender;
     }
 
-    public int getCep() {
+    public String getCep() {
         return cep;
     }
 
-    public void setCep(int cep) {
+    public void setCep(String cep) {
         this.cep = cep;
     }
 
-    public String getData_nasc() {
+    public Date getData_nasc() {
         return data_nasc;
     }
 
-    public void setData_nasc(String birth_date) {
+    public void setData_nasc(Date birth_date) {
         this.data_nasc = birth_date;
     }
 

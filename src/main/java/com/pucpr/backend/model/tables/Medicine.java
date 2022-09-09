@@ -12,10 +12,10 @@ public class Medicine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long id_produto;
     private String principio_ativo;
     private boolean deletado;
     @OneToOne
+    @JoinColumn(name="id_produto")
     private Product produto;
 
 
@@ -25,14 +25,6 @@ public class Medicine {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getId_produto() {
-        return id_produto;
-    }
-
-    public void setId_produto(Long id_produto) {
-        this.id_produto = id_produto;
     }
 
     public String getPrincipio_ativo() {

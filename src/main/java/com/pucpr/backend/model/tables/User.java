@@ -1,9 +1,12 @@
 package com.pucpr.backend.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,6 +29,7 @@ public class User implements Serializable, UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty
+    @Column(unique = true)
     private String login;
     @NotEmpty
     private String password;
@@ -33,14 +37,17 @@ public class User implements Serializable, UserDetails {
     private String firstName;
     @NotEmpty
     private String lastName;
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+
+    @Temporal(TemporalType.DATE)
     @CreatedDate
-    private Date dtCreation;
-    @Temporal(TemporalType.TIMESTAMP)
+    private Date dtCreation = new Date();
+
+    @Temporal(TemporalType.DATE)
     @LastModifiedDate
-    private Date dtUpdate;
+    private Date dtUpdate = new Date();
+
     @OneToOne
+    @JoinColumn(name="id_pessoa")
     private Person pessoa;
 
     public User() {

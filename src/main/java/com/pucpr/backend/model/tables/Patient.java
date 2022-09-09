@@ -13,8 +13,11 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
+    @JoinColumn(name = "id_pessoa")
     private Person pessoa;
-    @OneToOne(mappedBy = "paciente")
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_convenio")
     private Insurance convenio;
 
     public Person getPessoa() {
