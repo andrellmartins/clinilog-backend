@@ -1,5 +1,6 @@
 package com.pucpr.backend.model.tables;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
@@ -28,6 +29,7 @@ public class Batch  {
     private boolean deletado;
     @ManyToOne
     @JoinColumn(name="product_id")
+    @JsonBackReference("ProductBatch(id_produto)")
     private Product produto;
 
 

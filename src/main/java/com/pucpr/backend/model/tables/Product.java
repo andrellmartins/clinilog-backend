@@ -1,5 +1,7 @@
 package com.pucpr.backend.model.tables;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
@@ -19,6 +21,7 @@ public class Product  {
     private Long id_lote;
     @ManyToOne()
     @JoinColumn(name="id_func_cadastro")
+    @JsonBackReference("EmployeeProduct(func)")
     private Employee func;
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -27,9 +30,11 @@ public class Product  {
     private boolean deletado;
 
     @OneToMany(mappedBy = "produto")
+    @JsonManagedReference("ProductBatch(id_produto)")
     private List<Batch> lote;
 
     @OneToOne(mappedBy = "produto")
+    @JsonBackReference("ProductMedicine(id_produto)")
     private Medicine medicamento;
 
     public Medicine getMedicamento() {

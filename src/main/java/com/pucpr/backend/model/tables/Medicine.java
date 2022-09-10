@@ -1,6 +1,7 @@
 package com.pucpr.backend.model.tables;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 
@@ -16,6 +17,7 @@ public class Medicine {
     private boolean deletado;
     @OneToOne
     @JoinColumn(name="id_produto")
+    @JsonBackReference("ProductMedicine(id_produto)")
     private Product produto;
 
 

@@ -1,5 +1,6 @@
 package com.pucpr.backend.model.tables;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Insurance {
     private String convenio;
 
     @OneToMany(mappedBy = "convenio")
+    @JsonManagedReference("PatientInsurance(id_convenio)")
     private List<Patient> pacientes;
 
     public Long getId() {

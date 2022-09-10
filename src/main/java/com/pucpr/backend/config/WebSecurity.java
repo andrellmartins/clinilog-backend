@@ -47,8 +47,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
             .cors()
             .and()
         .authorizeRequests()
+            //sign up
             .antMatchers(SIGN_UP_URL).permitAll()
+            //cadastro pessoa
             .antMatchers(HttpMethod.POST, "/person/").permitAll()
+            //consultas do cadastro
+            .antMatchers(HttpMethod.GET, "/position/").permitAll()
+            //swagger
             .antMatchers("/v2/api-docs",
                     "/configuration/ui",
                     "/swagger-resources/**",
@@ -75,20 +80,23 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
         List<String> allowedOrigins = new ArrayList<>();
-        allowedOrigins.add("http://localhost:4200");
-        allowedOrigins.add("http://127.0.0.1:4200");
+        allowedOrigins.add("*");
+//        allowedOrigins.add("http://localhost:4200");
+//        allowedOrigins.add("http://127.0.0.1:4200");
 
         List<String> allowedMethods = new ArrayList<>();
-        allowedMethods.add("GET");
-        allowedMethods.add("POST");
-        allowedMethods.add("PUT");
-        allowedMethods.add("DELETE");
+        allowedMethods.add("*");
+//        allowedMethods.add("GET");
+//        allowedMethods.add("POST");
+//        allowedMethods.add("PUT");
+//        allowedMethods.add("DELETE");
 
         List<String> allowedHeaders = new ArrayList<>();
-        allowedHeaders.add("Content-type");
-        allowedHeaders.add("Accept");
-        allowedHeaders.add("Referer");
-        allowedHeaders.add(HEADER_STRING);
+        allowedHeaders.add("*");
+//        allowedHeaders.add("Content-type");
+//        allowedHeaders.add("Accept");
+//        allowedHeaders.add("Referer");
+//        allowedHeaders.add(HEADER_STRING);
 
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedHeaders(allowedHeaders);

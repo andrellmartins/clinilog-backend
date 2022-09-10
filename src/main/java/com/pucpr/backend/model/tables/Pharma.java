@@ -1,5 +1,6 @@
 package com.pucpr.backend.model.tables;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.Constraint;
@@ -21,6 +22,7 @@ public class Pharma  {
     private String crf_uf;
     @OneToOne
     @JoinColumn(name="id_employee")
+    @JsonBackReference("EmployeePharma(func)")
     private Employee func;
 
     public Long getId() {

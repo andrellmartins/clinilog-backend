@@ -1,5 +1,6 @@
 package com.pucpr.backend.model.tables;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.boot.context.properties.bind.DefaultValue;
@@ -48,6 +49,7 @@ public class User implements Serializable, UserDetails {
 
     @OneToOne
     @JoinColumn(name="id_pessoa")
+    @JsonBackReference("PersonUser(id_pessoa)")
     private Person pessoa;
 
     public User() {

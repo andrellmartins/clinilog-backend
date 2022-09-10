@@ -1,5 +1,7 @@
 package com.pucpr.backend.model.tables;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -23,19 +25,24 @@ public class Employee {
 
     @OneToOne
     @JoinColumn(name="id_pessoa")
+    @JsonBackReference("PessoaEmployee(id_pessoa)")
     private Person pessoa;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name="id_position")
+    @JsonBackReference("PositionEmployee(id_position)")
     private Position cargo;
 
     @OneToOne(mappedBy = "func", cascade = CascadeType.ALL)
+    @JsonBackReference("EmployeeDoctor(func)")
     private Doctor medico;
 
     @OneToOne(mappedBy = "func", cascade = CascadeType.ALL)
+    @JsonBackReference("EmployeePharma(func)")
     private Pharma farma;
 
     @OneToMany(mappedBy = "func")
+    @JsonManagedReference("EmployeeProduct(func)")
     private List<Product> product;
 
     public Person getPessoa() {

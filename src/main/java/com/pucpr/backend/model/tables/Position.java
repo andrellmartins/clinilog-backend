@@ -1,7 +1,12 @@
 package com.pucpr.backend.model.tables;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.Fetch;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -12,7 +17,8 @@ import java.util.List;
     }
 )
 @EntityListeners(AuditingEntityListener.class)
-public class Position {
+@JsonIgnoreProperties(value = {"func"})
+public class Position implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,14 +26,15 @@ public class Position {
     @Column(unique = true)
     private String cargo;
 
-    @OneToMany(mappedBy = "cargo")
+    @OneToMany(mappedBy = "cargo", fetch = FetchType.LAZY)
+    @JsonManagedReference("PositionEmployee(id_position)")
     private List<Employee> func;
 
-    public List<Employee> getEmployee() {
+    public List<Employee> getFunc() {
         return func;
     }
 
-    public void setEmployee(List<Employee> func) {
+    public void setFunc(List<Employee> func) {
         this.func = func;
     }
 

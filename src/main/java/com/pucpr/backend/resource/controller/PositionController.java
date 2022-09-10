@@ -3,13 +3,14 @@ package com.pucpr.backend.resource.controller;
 import com.pucpr.backend.model.tables.Position;
 import com.pucpr.backend.resource.service.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/position")
+@RequestMapping("/position")
 public class PositionController {
 
     @Autowired
@@ -21,8 +22,12 @@ public class PositionController {
     }
 
     @GetMapping(value = "/")
-    public List<Position> getAll() {
-        return positionService.findAll();
+    public ResponseEntity<List<Position>> getAll() {
+        List<Position> positionsList = positionService.findAll();
+        if(positionsList == null || positionsList.isEmpty()){
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.ok(positionsList);
     }
 
     @PostMapping("/")
