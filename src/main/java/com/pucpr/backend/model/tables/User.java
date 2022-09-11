@@ -20,17 +20,19 @@ import java.util.Date;
 
 
 @Entity
-@Table(name="User")
+@Table(name="User", uniqueConstraints = {
+        @UniqueConstraint(name = "USER_UNIQUE_LOGIN", columnNames = {"login"})
+})
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"dtCreation", "dtUpdate"},
         allowGetters = true)
+
 public class User implements Serializable, UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty
-    @Column(unique = true)
     private String login;
     @NotEmpty
     private String password;

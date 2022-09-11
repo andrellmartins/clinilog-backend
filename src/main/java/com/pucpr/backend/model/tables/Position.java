@@ -23,7 +23,6 @@ public class Position implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
     private String cargo;
 
     @OneToMany(mappedBy = "cargo", fetch = FetchType.LAZY)

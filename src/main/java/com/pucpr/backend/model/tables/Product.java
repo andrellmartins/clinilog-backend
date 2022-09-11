@@ -29,7 +29,7 @@ public class Product  {
     private Date data_cadastro;
     private boolean deletado;
 
-    @OneToMany(mappedBy = "produto")
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
     @JsonManagedReference("ProductBatch(id_produto)")
     private List<Batch> lote;
 
