@@ -98,10 +98,18 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 //        allowedHeaders.add("Referer");
 //        allowedHeaders.add(HEADER_STRING);
 
+        List<String> exposedHeaders = new ArrayList<>();
+        exposedHeaders.add("*");
+
+
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedHeaders(allowedHeaders);
         corsConfiguration.setAllowedMethods(allowedMethods);
         corsConfiguration.setAllowedOriginPatterns(allowedOrigins);
+        corsConfiguration.setExposedHeaders(exposedHeaders);
+
+
+
 
         source.registerCorsConfiguration("/**", corsConfiguration);
 

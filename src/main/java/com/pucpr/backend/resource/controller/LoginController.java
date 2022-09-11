@@ -47,10 +47,6 @@ public class LoginController {
         @RequestBody User user
     ) throws JsonProcessingException {
 
-        XmlMapper xmlMapper = new XmlMapper();
-
-        System.out.println(xmlMapper.writeValueAsString(user));
-
         Authentication auth = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                 user.getLogin(),
