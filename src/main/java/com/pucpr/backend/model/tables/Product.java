@@ -23,17 +23,17 @@ public class Product  {
     @JoinColumn(name="id_func_cadastro")
     @JsonBackReference("EmployeeProduct(func)")
     private Employee func;
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    private Date data_cadastro;
+    private Date data_cadastro = new Date();;
     private boolean deletado;
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
     @JsonManagedReference("ProductBatch(id_produto)")
     private List<Batch> lote;
 
-    @OneToOne(mappedBy = "produto")
+    @OneToOne(mappedBy = "produto", cascade = CascadeType.ALL)
     @JsonBackReference("ProductMedicine(id_produto)")
     private Medicine medicamento;
 
