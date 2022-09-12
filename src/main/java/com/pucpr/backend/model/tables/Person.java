@@ -1,6 +1,9 @@
 package com.pucpr.backend.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.Date;
@@ -27,18 +30,27 @@ public class Person {
     private String sexo;
     private boolean deletado;
 
-    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
-    @JsonBackReference("PessoaEmployee(id_pessoa)")
+    @OneToOne(mappedBy = "pessoa", cascade = {CascadeType.ALL, CascadeType.PERSIST}, fetch=FetchType.EAGER)
+    @JoinColumn(name = "id_pessoa")
+    @JsonManagedReference("PessoaEmployee(id_pessoa)")
     private Employee employee;
 
-    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
-    @JsonBackReference("PersonPatient(id_pessoa)")
+    @OneToOne(mappedBy = "pessoa", cascade = {CascadeType.ALL, CascadeType.PERSIST}, fetch=FetchType.EAGER)
+    @JoinColumn(name = "id_pessoa")
+    @JsonManagedReference("PersonPatient(id_pessoa)")
     private Patient paciente;
 
-    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
-    @JsonBackReference("PersonUser(id_pessoa)")
+    @OneToOne(mappedBy = "pessoa", cascade = {CascadeType.ALL, CascadeType.PERSIST}, fetch=FetchType.EAGER)
+    @JoinColumn(name = "id_pessoa")
+    @JsonManagedReference("PersonUser(id_pessoa)")
     private User usuario;
 
+    @PrePersist
+    protected void prePersistConfigChild(){
+        this.employee.setPessoa(this);
+        this.paciente.setPessoa(this);
+        this.usuario.setPessoa(this);
+    }
 
     public Long getId() {
         return id;

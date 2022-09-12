@@ -6,7 +6,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 
 @Entity
-@Table(name="Medicamento")
+@Table(name="Medicamento", uniqueConstraints = {
+        @UniqueConstraint(name = "MEDICINE_UNIQUE_ID_PRODUTO", columnNames = {"id_produto"})
+})
 @EntityListeners(AuditingEntityListener.class)
 public class Medicine {
 
@@ -16,7 +18,7 @@ public class Medicine {
     private String principio_ativo;
     private boolean deletado;
     @OneToOne
-    @JoinColumn(name="id_produto")
+    @JoinColumn(name="id_produto", referencedColumnName = "id")
     @JsonBackReference("ProductMedicine(id_produto)")
     private Product produto;
 

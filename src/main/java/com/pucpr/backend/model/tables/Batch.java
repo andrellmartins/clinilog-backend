@@ -28,7 +28,7 @@ public class Batch  {
     private String id_func_cadastro;
     private boolean deletado;
     @ManyToOne
-    @JoinColumn(name="product_id")
+    @JoinColumn(name="product_id", referencedColumnName = "id")
     @JsonBackReference("ProductBatch(id_produto)")
     private Product produto;
 

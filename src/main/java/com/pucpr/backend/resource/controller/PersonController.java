@@ -5,10 +5,14 @@ import com.pucpr.backend.model.DTO.CadastroUsuarioDTO;
 import com.pucpr.backend.resource.service.PersonService;
 import com.pucpr.backend.model.tables.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.http.ResponseEntity.notFound;
 
 @RestController
 @RequestMapping("/person")
@@ -18,8 +22,12 @@ public class PersonController {
     private PersonService personService;
 
     @GetMapping(value = "/{id}")
-    public Object getById(@PathVariable long id) {
-        return personService.findById(id);
+    public ResponseEntity<Person> getById(@PathVariable long id) {
+        Optional<Person> person = personService.findById(id);
+        if(person.isPresent()){
+            return ResponseEntity.ok(person.get());
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(value = "/")
@@ -42,8 +50,15 @@ public class PersonController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable long id) {
-        personService.deleteById(id);
-        return ResponseEntity.ok().body("Person " + id + " excluded");
+    public ResponseEntity<Boolean> delete(@PathVariable long id) {
+        Optional<Person> pSearch = personService.findById(id);
+        if(pSearch.isPresent()){
+            Person p = pSearch.get();
+            p.setDeletado(true);
+            personService.save(p);
+            return ResponseEntity.ok().body(true);
+        }else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

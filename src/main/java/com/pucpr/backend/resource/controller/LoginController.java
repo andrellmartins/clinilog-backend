@@ -45,8 +45,7 @@ public class LoginController {
     @PostMapping("")
     public ResponseEntity<?> login(
         @RequestBody User user
-    ) throws JsonProcessingException {
-
+    ) {
         Authentication auth = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                 user.getLogin(),

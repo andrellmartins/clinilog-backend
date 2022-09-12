@@ -2,6 +2,7 @@ package com.pucpr.backend.config;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,10 +46,16 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
         if (token != null) {
             // parse the token.
-            String user = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
+            String user;
+            try{
+                user = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
                     .build()
                     .verify(token.replace(TOKEN_PREFIX, ""))
                     .getSubject();
+            }catch ( TokenExpiredException e){
+                System.out.println(e);
+                return null;
+            }
 
             if (user != null) {
                 // new arraylist means authorities
@@ -60,4 +67,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
         return null;
     }
+
+
 }

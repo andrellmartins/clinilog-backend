@@ -1,13 +1,12 @@
 package com.pucpr.backend.model.tables;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.Fetch;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(
@@ -26,7 +25,10 @@ public class Position implements Serializable {
     private String cargo;
 
     @OneToMany(mappedBy = "cargo", fetch = FetchType.LAZY)
-    @JsonManagedReference("PositionEmployee(id_position)")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+            property  = "cargo",
+            scope     = Employee[].class
+    )
     private List<Employee> func;
 
     public List<Employee> getFunc() {

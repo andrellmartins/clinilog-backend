@@ -21,7 +21,8 @@ import java.util.Date;
 
 @Entity
 @Table(name="User", uniqueConstraints = {
-        @UniqueConstraint(name = "USER_UNIQUE_LOGIN", columnNames = {"login"})
+        @UniqueConstraint(name = "USER_UNIQUE_LOGIN", columnNames = {"login"}),
+        @UniqueConstraint(name = "USER_UNIQUE_ID_PESSOA", columnNames = {"id_pessoa"})
 })
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"dtCreation", "dtUpdate"},
@@ -50,7 +51,7 @@ public class User implements Serializable, UserDetails {
     private Date dtUpdate = new Date();
 
     @OneToOne
-    @JoinColumn(name="id_pessoa")
+    @JoinColumn(name="id_pessoa", referencedColumnName = "id")
     @JsonBackReference("PersonUser(id_pessoa)")
     private Person pessoa;
 

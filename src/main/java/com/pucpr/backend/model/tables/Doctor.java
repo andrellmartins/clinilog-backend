@@ -9,7 +9,8 @@ import javax.persistence.*;
 @Table(
     name="Medico",
     uniqueConstraints = {
-        @UniqueConstraint(name="DOCTOR_UNIQUE_CRM_UF", columnNames = {"crm","crm_uf"})
+        @UniqueConstraint(name="DOCTOR_UNIQUE_CRM_UF", columnNames = {"crm","crm_uf"}),
+        @UniqueConstraint(name="DOCTOR_UNIQUE_ID_PESSOA", columnNames = {"id_employee"})
     }
 )
 @EntityListeners(AuditingEntityListener.class)
@@ -21,7 +22,7 @@ public class Doctor {
     private int crm;
     private String crm_uf;
     @OneToOne
-    @JoinColumn(name = "id_employee")
+    @JoinColumn(name = "id_employee", referencedColumnName = "id")
     @JsonBackReference("EmployeeDoctor(func)")
     private Employee func;
 

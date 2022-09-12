@@ -20,7 +20,7 @@ public class Product  {
     private boolean isMed;
     private Long id_lote;
     @ManyToOne()
-    @JoinColumn(name="id_func_cadastro")
+    @JoinColumn(name="id_func_cadastro", referencedColumnName = "id")
     @JsonBackReference("EmployeeProduct(func)")
     private Employee func;
     @Column(updatable = false)
@@ -36,6 +36,12 @@ public class Product  {
     @OneToOne(mappedBy = "produto", cascade = CascadeType.ALL)
     @JsonBackReference("ProductMedicine(id_produto)")
     private Medicine medicamento;
+
+    @PrePersist
+    protected void prePersistConfigChild(){
+        this.medicamento.setProduto(this);
+        this.lote.forEach(batch -> batch.setProduto(this));
+    }
 
     public Medicine getMedicamento() {
         return medicamento;
@@ -69,12 +75,12 @@ public class Product  {
         this.descricao = descricao;
     }
 
-    public boolean isMed() {
+    public boolean getIsMed() {
         return isMed;
     }
 
-    public void setMed(boolean med) {
-        isMed = med;
+    public void setIsMed(boolean idMed) {
+        isMed = idMed;
     }
 
     public Long getId_lote() {

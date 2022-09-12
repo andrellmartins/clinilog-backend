@@ -13,14 +13,17 @@ import java.util.List;
 public interface PersonRepository
         extends JpaRepository<Person, Long> {
 
-    public Person findById(long id);
+    @Query(value =
+            "SELECT p FROM Person p WHERE p.id = :id AND p.deletado = false"
+    )
+    public Person findById(
+        @Param("id") long id
+    );
 
+    @Query(value =
+            "SELECT p FROM Person p WHERE p.deletado = false"
+    )
     public List<Person> findAll();
 
-    public Person deleteById(long id);
-
-
-    @Query(value=" EXEC CADASTRARUSUARIODTO " +
-            " @DTO = {{usuario}} ", nativeQuery = true)
-    void cadastrarUsuario(@Param("usuario") CadastroUsuarioDTO usuario);
+    public Person save(Person person);
 }

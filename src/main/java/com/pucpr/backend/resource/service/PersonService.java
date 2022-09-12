@@ -76,40 +76,5 @@ public class PersonService
         return personRepository.count();
     }
 
-    public void cadastrarUsuario(CadastroUsuarioDTO usuario) {
-        EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();
-        try{
-            /*
-            * Tabelas:
-            *   Pessoa
-            *   Usuario
-            *   Funcionario
-            *   Paciente
-            *   Médico
-            *   Farmaceutico
-            * */
-            this.save( usuario.getEmployee().getPessoa() );
-            userService.save(usuario.getUser());
-            if(usuario.getEmployee() != null){
-                employeeService.save(usuario.getEmployee());
-                if(usuario.getEmployee().getMedico() != null) {
-                    Doctor doctor = usuario.getEmployee().getMedico();
-                    doctor.setFunc(usuario.getEmployee());
-                    doctorService.save(doctor);
-                }
-                if(usuario.getEmployee().getFarma() != null) {
-                    Pharma pharma = usuario.getEmployee().getFarma();
-                    pharma.setFunc(usuario.getEmployee());
-                    pharmaService.save(pharma);
-                }
-            }
-            if(usuario.getPatient() != null) {
-                patientService.save(usuario.getPatient());
-            }
-        }catch(Error e){
-            transaction.rollback();
-        }
-        transaction.commit();
-    }
+
 }

@@ -1,7 +1,10 @@
 package com.pucpr.backend.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jdk.nashorn.internal.codegen.ObjectClassGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -11,7 +14,8 @@ import java.util.List;
 @Table(
         name="Funcionario",
         uniqueConstraints = {
-                @UniqueConstraint(name="EMPLOYEE_UNIQUE_PIS", columnNames = {"pis"})
+            @UniqueConstraint(name="EMPLOYEE_UNIQUE_PIS", columnNames = {"pis"}),
+            @UniqueConstraint(name="EMPLOYEE_UNIQUE_ID_PESSOA", columnNames = {"id_pessoa"})
         }
 )
 @EntityListeners(AuditingEntityListener.class)
@@ -28,22 +32,33 @@ public class Employee {
     @JsonBackReference("PessoaEmployee(id_pessoa)")
     private Person pessoa;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name="id_position")
-    @JsonBackReference("PositionEmployee(id_position)")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+            property  = "cargo",
+            scope     = Position.class
+    )
     private Position cargo;
 
     @OneToOne(mappedBy = "func", cascade = CascadeType.ALL)
-    @JsonBackReference("EmployeeDoctor(func)")
+    @JsonManagedReference("EmployeeDoctor(func)")
     private Doctor medico;
 
     @OneToOne(mappedBy = "func", cascade = CascadeType.ALL)
-    @JsonBackReference("EmployeePharma(func)")
+    @JsonManagedReference("EmployeePharma(func)")
     private Pharma farma;
 
     @OneToMany(mappedBy = "func")
-    @JsonManagedReference("EmployeeProduct(func)")
+    @JsonBackReference("EmployeeProduct(func)")
     private List<Product> product;
+
+    @PrePersist
+    protected void prePersistConfigChild(){
+        if(this.medico != null)
+            this.medico.setFunc(this);
+        if(this.farma != null)
+            this.farma.setFunc(this);
+    }
 
     public Person getPessoa() {
         return pessoa;

@@ -9,7 +9,8 @@ import javax.validation.Constraint;
 @Table(
     name="Farmaceutico",
     uniqueConstraints = {
-            @UniqueConstraint(name="PHARMA_UNIQUE_CRF_UF",columnNames = {"crf","crf_uf"})
+            @UniqueConstraint(name="PHARMA_UNIQUE_CRF_UF",columnNames = {"crf","crf_uf"}),
+            @UniqueConstraint(name="PHARMA_UNIQUE_ID_EMPLOYEE",columnNames = {"id_employee"})
     }
 )
 @EntityListeners(AuditingEntityListener.class)
@@ -21,7 +22,7 @@ public class Pharma  {
     private int crf;
     private String crf_uf;
     @OneToOne
-    @JoinColumn(name="id_employee")
+    @JoinColumn(name="id_employee", referencedColumnName = "id")
     @JsonBackReference("EmployeePharma(func)")
     private Employee func;
 

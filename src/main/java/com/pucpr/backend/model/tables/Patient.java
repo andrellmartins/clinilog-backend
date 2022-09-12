@@ -6,20 +6,24 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name="Paciente")
+@Table(name="Paciente",
+uniqueConstraints = {
+        @UniqueConstraint(name="PATIENT_UNIQUE_ID_PESSOA", columnNames = {"id_pessoa"})
+})
 @EntityListeners(AuditingEntityListener.class)
+
 public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
-    @JoinColumn(name = "id_pessoa")
+    @JoinColumn(name = "id_pessoa", referencedColumnName = "id")
     @JsonBackReference("PersonPatient(id_pessoa)")
     private Person pessoa;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_convenio")
+    @JoinColumn(name = "id_convenio", referencedColumnName = "id")
     @JsonBackReference("PatientInsurance(id_convenio)")
     private Insurance convenio;
 
