@@ -47,9 +47,15 @@ public class Person {
 
     @PrePersist
     protected void prePersistConfigChild(){
-        this.employee.setPessoa(this);
-        this.paciente.setPessoa(this);
-        this.usuario.setPessoa(this);
+        if(this.employee != null){
+            this.employee.setPessoa(this);
+        }
+        if(this.paciente != null){
+            this.paciente.setPessoa(this);
+        }
+        if(this.usuario != null){
+            this.usuario.setPessoa(this);
+        }
     }
 
     public Long getId() {
