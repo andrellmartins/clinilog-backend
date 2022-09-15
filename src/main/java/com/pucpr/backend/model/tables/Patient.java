@@ -3,6 +3,8 @@ package com.pucpr.backend.model.tables;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -20,11 +22,15 @@ public class Patient {
     @OneToOne
     @JoinColumn(name = "id_pessoa", referencedColumnName = "id")
     @JsonBackReference("PersonPatient(id_pessoa)")
+    @NotEmpty
+    @NotNull
     private Person pessoa;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_convenio", referencedColumnName = "id")
     @JsonBackReference("PatientInsurance(id_convenio)")
+    @NotEmpty
+    @NotNull
     private Insurance convenio;
 
     public Person getPessoa() {

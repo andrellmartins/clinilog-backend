@@ -8,6 +8,8 @@ import jdk.nashorn.internal.codegen.ObjectClassGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -24,12 +26,18 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
+    @NotEmpty
     private String pis;
+    @NotNull
+    @NotEmpty
     private float salario;
 
     @OneToOne
     @JoinColumn(name="id_pessoa")
     @JsonBackReference("PessoaEmployee(id_pessoa)")
+    @NotEmpty
+    @NotNull
     private Person pessoa;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
@@ -38,6 +46,8 @@ public class Employee {
             property  = "cargo",
             scope     = Position.class
     )
+    @NotEmpty
+    @NotNull
     private Position cargo;
 
     @OneToOne(mappedBy = "func", cascade = CascadeType.ALL)

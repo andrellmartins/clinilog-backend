@@ -4,6 +4,8 @@ package com.pucpr.backend.model.tables;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="Medicamento", uniqueConstraints = {
@@ -15,11 +17,17 @@ public class Medicine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty
+    @NotNull
     private String principio_ativo;
+    @NotEmpty
+    @NotNull
     private boolean deletado;
     @OneToOne
     @JoinColumn(name="id_produto", referencedColumnName = "id")
     @JsonBackReference("ProductMedicine(id_produto)")
+    @NotEmpty
+    @NotNull
     private Product produto;
 
 

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.Fetch;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
@@ -22,6 +24,8 @@ public class Position implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty
+    @NotNull
     private String cargo;
 
     @OneToMany(mappedBy = "cargo", fetch = FetchType.LAZY)

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(
@@ -19,11 +21,18 @@ public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @NotEmpty
     private int crm;
+    @NotNull
+    @NotEmpty
     private String crm_uf;
     @OneToOne
     @JoinColumn(name = "id_employee", referencedColumnName = "id")
     @JsonBackReference("EmployeeDoctor(func)")
+    @NotNull
+    @NotEmpty
     private Employee func;
 
     public Long getId() {

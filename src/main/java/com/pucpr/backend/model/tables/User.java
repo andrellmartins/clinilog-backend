@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.NotEmpty;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,25 +35,35 @@ public class User implements Serializable, UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty
+    @NotNull
     private String login;
     @NotEmpty
+    @NotNull
     private String password;
     @NotEmpty
+    @NotNull
     private String firstName;
     @NotEmpty
+    @NotNull
     private String lastName;
 
     @Temporal(TemporalType.DATE)
     @CreatedDate
+    @NotEmpty
+    @NotNull
     private Date dtCreation = new Date();
 
     @Temporal(TemporalType.DATE)
     @LastModifiedDate
+    @NotEmpty
+    @NotNull
     private Date dtUpdate = new Date();
 
     @OneToOne
     @JoinColumn(name="id_pessoa", referencedColumnName = "id")
     @JsonBackReference("PersonUser(id_pessoa)")
+    @NotEmpty
+    @NotNull
     private Person pessoa;
 
     public User() {

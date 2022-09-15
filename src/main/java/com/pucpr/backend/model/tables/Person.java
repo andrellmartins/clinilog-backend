@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 
@@ -22,12 +24,25 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty
+    @NotNull
     private String nome;
+    @NotEmpty
+    @NotNull
     private String cpf;
+    @NotEmpty
+    @NotNull
     private String ender;
+    @NotEmpty
+    @NotNull
     private String cep;
+    @NotEmpty
+    @NotNull
     private Date data_nasc;
+    @NotEmpty
+    @NotNull
     private String sexo;
+
     private boolean deletado;
 
     @OneToOne(mappedBy = "pessoa", cascade = {CascadeType.ALL, CascadeType.PERSIST}, fetch=FetchType.EAGER)

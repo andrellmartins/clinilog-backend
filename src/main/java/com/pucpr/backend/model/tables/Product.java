@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -16,16 +18,26 @@ public class Product  {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty
+    @NotNull
     private String descricao;
+    @NotEmpty
+    @NotNull
     private boolean isMed;
+    @NotEmpty
+    @NotNull
     private Long id_lote;
     @ManyToOne()
     @JoinColumn(name="id_func_cadastro", referencedColumnName = "id")
     @JsonBackReference("EmployeeProduct(func)")
+    @NotEmpty
+    @NotNull
     private Employee func;
     @Column(updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
+    @NotEmpty
+    @NotNull
     private Date data_cadastro = new Date();;
     private boolean deletado;
 
@@ -34,13 +46,17 @@ public class Product  {
     private List<Batch> lote;
 
     @OneToOne(mappedBy = "produto", cascade = CascadeType.ALL)
-    @JsonBackReference("ProductMedicine(id_produto)")
+    @JsonManagedReference("ProductMedicine(id_produto)")
     private Medicine medicamento;
 
     @PrePersist
     protected void prePersistConfigChild(){
-        this.medicamento.setProduto(this);
-        this.lote.forEach(batch -> batch.setProduto(this));
+        if(this.medicamento != null) {
+            this.medicamento.setProduto(this);
+        }
+        if(this.lote != null){
+            this.lote.forEach(batch -> batch.setProduto(this));
+        }
     }
 
     public Medicine getMedicamento() {
