@@ -5,9 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 
@@ -19,7 +24,7 @@ import java.util.Date;
     }
 )
 @EntityListeners(AuditingEntityListener.class)
-public class Person {
+public class Person implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,6 +77,54 @@ public class Person {
             this.usuario.setPessoa(this);
         }
     }
+    /*
+     * INÍCIO OVERRIDE USER_DETAILS
+     * */
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public String getUsername() {
+
+        if(this.usuario != null){
+            return this.usuario.getLogin();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.usuario != null;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.usuario != null;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.usuario != null;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.usuario != null;
+    }
+
+    @Override
+    public String getPassword() {
+        if(this.usuario != null){
+            return this.usuario.getPassword();
+        }
+        return null;
+    }
+
+    /*
+     * FIM OVERRIDE USER_DETAILS
+     * */
 
     public Long getId() {
         return id;

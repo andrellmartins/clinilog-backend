@@ -33,8 +33,11 @@ public class ProductController {
     @PostMapping("/")
     public ResponseEntity<Product> save(
             @RequestBody Product product) {
-        productService.save(product) ;
-        return ResponseEntity.ok().body(product);
+        Optional<Product> savedProduct = productService.save(product) ;
+        if(!savedProduct.isPresent()){
+            throw new Error("Produto não cadastrado!");
+        }
+        return ResponseEntity.ok().body(savedProduct.get());
     }
 
     @PutMapping("/")

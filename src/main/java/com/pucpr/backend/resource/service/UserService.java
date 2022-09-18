@@ -2,6 +2,7 @@ package com.pucpr.backend.resource.service;
 
 
 import antlr.BaseAST;
+import com.pucpr.backend.model.tables.Person;
 import com.pucpr.backend.model.tables.User;
 import com.pucpr.backend.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,10 @@ import java.util.Optional;
 @Service
 public class UserService implements CrudInterface<User>, UserDetailsService  {
 
-    private static UserService userService;
+    private static UserService   userService;
+
+    @Autowired
+    private PersonService personService;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -75,12 +79,14 @@ public class UserService implements CrudInterface<User>, UserDetailsService  {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = this.userRepository.findByLogin(username);
-        if(user == null && "admin".equals(username)){
-            user = new User();
-            user.setLogin("admin");
-            user.setPassword(bCryptPasswordEncoder.encode("admin"));
+        Person person = personService.findByUserLogin(username);
+        if(person.getUsuario() == null && "admin".equals(username)){
+            person = new Person();
+            User adminUser = new User();
+            adminUser.setLogin("admin");
+            adminUser.setPassword(bCryptPasswordEncoder.encode("admin"));
+            person.setUsuario(adminUser);
         }
-        return user;
+        return person;
     }
 }

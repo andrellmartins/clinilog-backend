@@ -41,7 +41,7 @@ public class Product  {
     private Date data_cadastro = new Date();;
     private boolean deletado;
 
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("ProductBatch(id_produto)")
     private List<Batch> lote;
 

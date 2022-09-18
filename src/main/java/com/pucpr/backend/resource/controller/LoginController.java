@@ -5,6 +5,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.ctc.wstx.shaded.msv.org_jp_gr_xml.dom.XMLMaker;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.pucpr.backend.config.MailSender;
+import com.pucpr.backend.model.tables.Person;
 import com.pucpr.backend.model.tables.User;
 import io.swagger.annotations.Authorization;
 import org.apache.coyote.Response;
@@ -22,12 +24,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import springfox.documentation.swagger.readers.operation.ResponseHeaders;
 
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.text.html.parser.Entity;
 import javax.websocket.server.PathParam;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.pucpr.backend.config.SecurityConstants.*;
 import static com.pucpr.backend.config.SecurityConstants.SECRET;
@@ -38,7 +47,10 @@ public class LoginController {
 
     private AuthenticationManager authenticationManager;
 
+    private MailSender mailSender;
+
     public LoginController(AuthenticationManager authenticationManager){
+        this.mailSender = new MailSender();
         this.authenticationManager = authenticationManager;
     }
 
@@ -55,7 +67,18 @@ public class LoginController {
         );
 
         if(auth.isAuthenticated()){
-            User currentUser = (User) auth.getPrincipal();
+            Person currentUser = (Person) auth.getPrincipal();
+            /* howtosendmail
+            try {
+                List<String> emails = new ArrayList<String>();
+                emails.add("dudu020300@gmail.com");
+                // Set To: header field of the header.
+                mailSender.sendMail("<b>Você<b> <br/><br/><br/> logou no clinilog","Foi você, não ?",emails);
+            } catch (MessagingException mex) {
+                mex.printStackTrace();
+            }
+            */
+
             return ResponseEntity.ok()
                     .header(HEADER_STRING,TOKEN_PREFIX + generateJWTToken(currentUser))
                     .body(currentUser);
@@ -64,9 +87,9 @@ public class LoginController {
         }
     }
 
-    private String generateJWTToken(User user){
+    private String generateJWTToken(Person user){
         return JWT.create()
-                .withSubject(user.getLogin())
+                .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(Algorithm.HMAC512(SECRET.getBytes()));
     }

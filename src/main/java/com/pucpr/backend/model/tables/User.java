@@ -2,6 +2,8 @@ package com.pucpr.backend.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.annotation.CreatedDate;
@@ -29,7 +31,7 @@ import java.util.Date;
 @JsonIgnoreProperties(value = {"dtCreation", "dtUpdate"},
         allowGetters = true)
 
-public class User implements Serializable, UserDetails {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,42 +70,7 @@ public class User implements Serializable, UserDetails {
 
     public User() {
     }
-    /*
-     * INÍCIO OVERRIDE USER_DETAILS
-     * */
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
-    }
 
-    @Override
-    public String getUsername() {
-        return this.login;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return this.login != null;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return this.login != null;
-    }
-
-    /*
-    * FIM OVERRIDE USER_DETAILS
-    * */
 
     public Long getId() {
         return id;

@@ -58,7 +58,8 @@ public class PersonService
 
     @Override
     public Optional<Person> findById(long id) {
-        return Optional.of(personRepository.findById(id));
+        Person p = personRepository.findById(id);
+        return Optional.of(p);
     }
 
     @Override
@@ -77,4 +78,7 @@ public class PersonService
     }
 
 
+    public Person findByUserLogin(String login) {
+        return this.personRepository.findByLogin(login);
+    }
 }

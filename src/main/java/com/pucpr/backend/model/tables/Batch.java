@@ -23,7 +23,7 @@ public class Batch  {
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    private Date data_cadastro;
+    private Date data_cadastro = new Date();
     private String fabricante;
     private String id_func_cadastro;
     private boolean deletado;
