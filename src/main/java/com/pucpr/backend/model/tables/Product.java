@@ -1,7 +1,10 @@
 package com.pucpr.backend.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
@@ -12,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name="Produto")
+@DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 public class Product  {
 
@@ -27,6 +31,14 @@ public class Product  {
     @NotEmpty
     @NotNull
     private Long id_lote;
+    @NotEmpty
+    @NotNull
+    @Column(nullable = false)
+    private Long qtd_minima = 0L;
+    @NotEmpty
+    @NotNull
+    @Column(nullable = false)
+    private Long qtd_disponivel = 0L;
     @ManyToOne()
     @JoinColumn(name="id_func_cadastro", referencedColumnName = "id")
     @JsonBackReference("EmployeeProduct(func)")
@@ -38,7 +50,7 @@ public class Product  {
     @CreatedDate
     @NotEmpty
     @NotNull
-    private Date data_cadastro = new Date();;
+    private Date data_cadastro = new Date();
     private boolean deletado;
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -127,6 +139,22 @@ public class Product  {
 
     public void setDeletado(boolean deletado) { this.deletado = deletado; }
 
+    public Long getQtd_disponivel() {
+        return qtd_disponivel;
+    }
+
+    public void setQtd_disponivel(Long qtd_disponivel) {
+        this.qtd_disponivel = qtd_disponivel;
+    }
+
+
+    public Long getQtd_minima() {
+        return qtd_minima;
+    }
+
+    public void setQtd_minima(Long qtd_minima) {
+        this.qtd_minima = qtd_minima;
+    }
 
 
 

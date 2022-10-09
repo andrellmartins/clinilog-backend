@@ -1,8 +1,10 @@
 package com.pucpr.backend.resource.service;
 
 
+import com.pucpr.backend.model.tables.Batch;
 import com.pucpr.backend.model.tables.Product;
 import com.pucpr.backend.model.repository.ProductRepository;
+import com.pucpr.backend.model.tables.ProductMovement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,9 @@ public class ProductService
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductMovementService productMovementService;
+
     @Override
     public List<Product> findAll() {
         return productRepository.findAll();
@@ -24,6 +29,16 @@ public class ProductService
 
     @Override
     public Optional<Product> save(Product entity) {
+        if(entity.getId() != null && entity.getLote() != null){
+            Product currentProduct = productRepository.findById(entity.getId()).get();
+            Long qtdProduct = currentProduct.getQtd_disponivel();
+            for (Batch lote : entity.getLote()){
+                if(lote.getId() == null){
+                    qtdProduct+=lote.getQtd_inicial();
+                }
+            }
+            entity.setQtd_disponivel(qtdProduct);
+        }
         return Optional.of(productRepository.save(entity));
     }
 

@@ -51,8 +51,10 @@ public class UserService implements CrudInterface<User>, UserDetailsService  {
 
     @Override
     public Optional<User> save(User entity){
-        entity.setPassword(bCryptPasswordEncoder
-                    .encode(entity.getPassword()));
+        if(entity.getId() == null){
+            entity.setPassword(bCryptPasswordEncoder
+                        .encode(entity.getPassword()));
+        }
 
         return Optional.of(userRepository.save(entity));
     }
@@ -88,5 +90,9 @@ public class UserService implements CrudInterface<User>, UserDetailsService  {
             person.setUsuario(adminUser);
         }
         return person;
+    }
+
+    public User findByEmail(String email) {
+        return this.userRepository.findByPersonEmail(email);
     }
 }

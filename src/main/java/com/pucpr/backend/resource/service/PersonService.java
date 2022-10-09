@@ -1,7 +1,6 @@
 package com.pucpr.backend.resource.service;
 
 
-import com.pucpr.backend.model.DTO.CadastroUsuarioDTO;
 import com.pucpr.backend.model.repository.PersonRepository;
 import com.pucpr.backend.model.tables.Doctor;
 import com.pucpr.backend.model.tables.Person;
@@ -11,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -77,7 +78,7 @@ public class PersonService
         return personRepository.count();
     }
 
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Person findByUserLogin(String login) {
         return this.personRepository.findByLogin(login);
     }

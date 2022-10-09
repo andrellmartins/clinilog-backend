@@ -1,6 +1,5 @@
 package com.pucpr.backend.model.repository;
 
-import com.pucpr.backend.model.DTO.CadastroUsuarioDTO;
 import com.pucpr.backend.model.tables.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

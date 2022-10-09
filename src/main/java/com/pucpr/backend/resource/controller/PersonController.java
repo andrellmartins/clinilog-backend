@@ -1,7 +1,6 @@
 package com.pucpr.backend.resource.controller;
 
 
-import com.pucpr.backend.model.DTO.CadastroUsuarioDTO;
 import com.pucpr.backend.resource.service.PersonService;
 import com.pucpr.backend.model.tables.Person;
 import org.springframework.beans.factory.annotation.Autowired;

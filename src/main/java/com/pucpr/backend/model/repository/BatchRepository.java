@@ -14,4 +14,5 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
     public List<Batch> findAll();
 
     public Batch deleteById(long id);
+
 }

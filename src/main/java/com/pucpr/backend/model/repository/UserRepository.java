@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -19,4 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u where u.login=:username and u.pessoa.deletado = false")
     User findByLogin(@Param("username") String username);
+
+    @Query("select u from User u where u.pessoa.email = :email AND u.pessoa.deletado = false")
+    User findByPersonEmail(@Param("email") String email);
 }

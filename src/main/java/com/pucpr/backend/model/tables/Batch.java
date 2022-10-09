@@ -1,6 +1,7 @@
 package com.pucpr.backend.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.pucpr.backend.model.table_rules.BatchRules;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
@@ -8,7 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="Lote")
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners({AuditingEntityListener.class, BatchRules.class})
 public class Batch  {
 
     @Id
@@ -27,11 +28,16 @@ public class Batch  {
     private String fabricante;
     private String id_func_cadastro;
     private boolean deletado;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="product_id", referencedColumnName = "id")
     @JsonBackReference("ProductBatch(id_produto)")
     private Product produto;
 
+    @PrePersist
+    public void beforeInsert(){
+        //validação lote
+        this.qtd_disponivel = this.qtd_inicial;
+    }
 
     public Product getProduto() {
         return produto;
@@ -108,6 +114,5 @@ public class Batch  {
     public boolean isDeletado() { return deletado; }
 
     public void setDeletado(boolean deletado) { this.deletado = deletado; }
-
 
 }

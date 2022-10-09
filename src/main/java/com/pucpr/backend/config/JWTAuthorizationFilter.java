@@ -3,6 +3,7 @@ package com.pucpr.backend.config;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.pucpr.backend.model.tables.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import static com.pucpr.backend.config.SecurityConstants.*;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
-
+    public static User currentUser;
     public JWTAuthorizationFilter(AuthenticationManager authManager) {
         super(authManager);
     }

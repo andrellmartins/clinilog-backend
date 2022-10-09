@@ -1,5 +1,6 @@
 package com.pucpr.backend.config;
 
+import com.pucpr.backend.model.tables.User;
 import com.pucpr.backend.resource.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -51,6 +52,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
             .antMatchers(SIGN_UP_URL).permitAll()
             //cadastro pessoa
             .antMatchers(HttpMethod.POST, "/person/").permitAll()
+            //recuperacao senha
+            .antMatchers("/user/recuperar-senha/**").permitAll()
             //consultas do cadastro
             .antMatchers(HttpMethod.GET, "/position/").permitAll()
             //swagger
@@ -88,21 +91,20 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
         List<String> allowedMethods = new ArrayList<>();
         allowedMethods.add("*");
-//        allowedMethods.add("GET");
-//        allowedMethods.add("POST");
-//        allowedMethods.add("PUT");
-//        allowedMethods.add("DELETE");
+        allowedMethods.add("GET");
+        allowedMethods.add("POST");
+        allowedMethods.add("PUT");
+        allowedMethods.add("DELETE");
 
         List<String> allowedHeaders = new ArrayList<>();
         allowedHeaders.add("*");
-//        allowedHeaders.add("Content-type");
-//        allowedHeaders.add("Accept");
-//        allowedHeaders.add("Referer");
-//        allowedHeaders.add(HEADER_STRING);
+        allowedHeaders.add("Content-type");
+        allowedHeaders.add("Accept");
+        allowedHeaders.add("Referer");
+        allowedHeaders.add(HEADER_STRING);
 
         List<String> exposedHeaders = new ArrayList<>();
         exposedHeaders.add("*");
-
 
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedHeaders(allowedHeaders);

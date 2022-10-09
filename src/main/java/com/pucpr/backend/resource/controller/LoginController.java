@@ -11,12 +11,15 @@ import com.pucpr.backend.model.tables.User;
 import io.swagger.annotations.Authorization;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,10 +50,10 @@ public class LoginController {
 
     private AuthenticationManager authenticationManager;
 
-    private MailSender mailSender;
+//    private MailSender mailSender;
 
     public LoginController(AuthenticationManager authenticationManager){
-        this.mailSender = new MailSender();
+//        this.mailSender = new MailSender();
         this.authenticationManager = authenticationManager;
     }
 
@@ -66,8 +69,11 @@ public class LoginController {
             )
         );
 
+
         if(auth.isAuthenticated()){
             Person currentUser = (Person) auth.getPrincipal();
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
             /* howtosendmail
             try {
                 List<String> emails = new ArrayList<String>();

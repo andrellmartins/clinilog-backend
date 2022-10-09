@@ -29,7 +29,7 @@ public class MailSender {
         Session session = Session.getInstance(prop, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(email_username, email_password);
+            return new PasswordAuthentication(email_username, email_password);
             }
         });
         Message message = new MimeMessage(session);

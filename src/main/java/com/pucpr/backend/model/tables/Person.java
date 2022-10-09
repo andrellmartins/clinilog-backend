@@ -20,7 +20,8 @@ import java.util.Date;
 @Table(
     name="Pessoa",
     uniqueConstraints = {
-            @UniqueConstraint(name="PERSON_UNIQUE_CPF", columnNames = {"cpf"})
+            @UniqueConstraint(name="PERSON_UNIQUE_CPF", columnNames = {"cpf"}),
+            @UniqueConstraint(name="PERSON_UNIQUE_EMAIL", columnNames = {"email"})
     }
 )
 @EntityListeners(AuditingEntityListener.class)
@@ -47,6 +48,9 @@ public class Person implements UserDetails {
     @NotEmpty
     @NotNull
     private String sexo;
+    @NotEmpty
+    @NotNull
+    private String email;
 
     private boolean deletado;
 
@@ -215,5 +219,12 @@ public class Person implements UserDetails {
         this.usuario = usuario;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
 }
