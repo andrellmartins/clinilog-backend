@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.pucpr.backend.model.DTO.UserAuthorityDTO;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.GrantedAuthoritiesContainer;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -85,8 +88,17 @@ public class Person implements UserDetails {
      * INÍCIO OVERRIDE USER_DETAILS
      * */
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
+    public Collection<GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> permissoes = new ArrayList<>();
+        if(this.employee != null){
+            if(this.employee.getCargo().isAcesso_modulo_estoque()){
+                permissoes.add(new UserAuthorityDTO("estoque"));
+            }
+            if(this.employee.getCargo().isAcesso_modulo_pessoas()){
+                permissoes.add(new UserAuthorityDTO("pessoas"));
+            }
+        }
+        return permissoes;
     }
 
     @Override

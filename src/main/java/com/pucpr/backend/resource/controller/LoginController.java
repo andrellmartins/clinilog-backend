@@ -13,6 +13,7 @@ import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -89,7 +90,7 @@ public class LoginController {
                     .header(HEADER_STRING,TOKEN_PREFIX + generateJWTToken(currentUser))
                     .body(currentUser);
         }else{
-            return new ResponseEntity<>("Não Autenticado",HttpStatus.FORBIDDEN);
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
     }
 

@@ -18,4 +18,6 @@ public interface PositionRepository extends JpaRepository<Position, Long> {
     public List<Position> findAll();
 
     public Position deleteById(long id);
+
+    public Position save(Position save);
 }

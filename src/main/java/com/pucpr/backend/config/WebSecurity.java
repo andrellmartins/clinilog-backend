@@ -1,5 +1,6 @@
 package com.pucpr.backend.config;
 
+import com.pucpr.backend.model.DTO.UserAuthorityDTO;
 import com.pucpr.backend.model.tables.User;
 import com.pucpr.backend.resource.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,15 +58,29 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
             //consultas do cadastro
             .antMatchers(HttpMethod.GET, "/position/").permitAll()
             //swagger
-            .antMatchers("/v2/api-docs",
+            .antMatchers(
+                    "/v2/api-docs",
                     "/configuration/ui",
                     "/swagger-resources/**",
                     "/configuration/security",
                     "/swagger-ui.html",
                     "/webjars/**"
-            ).permitAll()
-            .and()
-        .authorizeRequests()
+            )     .permitAll()
+            .and().authorizeRequests()
+            //Permissões Genéricas
+            .antMatchers(
+                    HttpMethod.GET, "/person/{id}","/product-movement/**"
+            ).hasAnyAuthority("estoque", "pessoas")
+            //Permissão Modulo de Pessoas
+            .antMatchers(
+                    "/person/**",
+                    "/position/**"
+            ).hasAuthority("pessoas")
+            //Permissão Modulo de Estoque
+            .antMatchers(
+                "/product/**"
+            ).hasAuthority("estoque")
+            //anyRequests
             .anyRequest().authenticated()
             .and()
         .addFilter(new JWTAuthorizationFilter(authenticationManager()))
@@ -77,8 +92,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
     }
-
-
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {

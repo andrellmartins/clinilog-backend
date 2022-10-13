@@ -3,11 +3,15 @@ package com.pucpr.backend.config;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.pucpr.backend.model.tables.Person;
 import com.pucpr.backend.model.tables.User;
+import com.pucpr.backend.resource.service.PersonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -17,11 +21,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.pucpr.backend.config.SecurityConstants.*;
-
+@Component
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
-    public static User currentUser;
     public JWTAuthorizationFilter(AuthenticationManager authManager) {
         super(authManager);
+    }
+
+    private static PersonService personService;
+
+    @Autowired
+    public void init(PersonService personService){
+        JWTAuthorizationFilter.personService = personService;
     }
 
     @Override
@@ -57,10 +67,12 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                 System.out.println(e);
                 return null;
             }
-
+            System.out.println("Usuario JWTAuthorizationFilter");
+            System.out.println(user);
             if (user != null) {
                 // new arraylist means authorities
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                Person currentUser = this.personService.findByUserLogin(user);
+                return new UsernamePasswordAuthenticationToken(currentUser, null, currentUser.getAuthorities());
             }
 
             return null;
@@ -68,6 +80,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
         return null;
     }
+
 
 
 }

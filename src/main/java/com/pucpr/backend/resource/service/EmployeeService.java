@@ -44,4 +44,7 @@ public class EmployeeService
         return employeeRepository.count();
     }
 
+    public List<Employee> findByCargoId(Long idCargo) {
+        return employeeRepository.findByCargoId(idCargo);
+    }
 }

@@ -42,7 +42,7 @@ public class ProductMovementService
 
     @Override
     public Optional<ProductMovement> save(ProductMovement entity) {
-        this.currentUser = personService.findByUserLogin(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        this.currentUser = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(entity.getQtd_movimentada() < 0){
             Product p = entity.getLote().getProduto();
             if(p != null && p.getQtd_disponivel() < p.getQtd_minima()){

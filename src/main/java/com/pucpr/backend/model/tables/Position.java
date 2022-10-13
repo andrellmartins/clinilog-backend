@@ -27,6 +27,10 @@ public class Position implements Serializable {
     @NotEmpty
     @NotNull
     private String cargo;
+    @NotNull
+    private boolean acesso_modulo_estoque = false;
+    @NotNull
+    private boolean acesso_modulo_pessoas = false;
 
     @OneToMany(mappedBy = "cargo", fetch = FetchType.LAZY)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
@@ -59,5 +63,19 @@ public class Position implements Serializable {
         this.cargo = cargo;
     }
 
+    public boolean isAcesso_modulo_estoque() {
+        return acesso_modulo_estoque;
+    }
 
+    public void setAcesso_modulo_estoque(boolean acesso_modulo_estoque) {
+        this.acesso_modulo_estoque = acesso_modulo_estoque;
+    }
+
+    public boolean isAcesso_modulo_pessoas() {
+        return acesso_modulo_pessoas;
+    }
+
+    public void setAcesso_modulo_pessoas(boolean acesso_modulo_pessoas) {
+        this.acesso_modulo_pessoas = acesso_modulo_pessoas;
+    }
 }
