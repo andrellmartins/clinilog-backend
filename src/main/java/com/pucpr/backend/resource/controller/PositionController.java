@@ -4,8 +4,13 @@ import com.pucpr.backend.config.MailSender;
 import com.pucpr.backend.model.DTO.PositionPermissionDTO;
 import com.pucpr.backend.model.tables.Employee;
 import com.pucpr.backend.model.tables.Position;
+import com.pucpr.backend.model.tables.User;
 import com.pucpr.backend.resource.service.EmployeeService;
 import com.pucpr.backend.resource.service.PositionService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Api(
+        value = "Cargos",
+        description = "Gerenciar os cargos dos funcionários no sistema.",
+        tags = "Cargos"
+)
 @RequestMapping("/position")
 public class PositionController {
 
@@ -31,15 +41,35 @@ public class PositionController {
     private MailSender mailSender = new MailSender();
 
     @GetMapping(value = "/")
+    @ApiOperation(
+            value = "Consultar todos os cargos no sistema",
+            tags = {"Cargos"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse( code = 200, message= "Sucesso", response = Position[].class),
+            @ApiResponse( code = 500, message= "Erro", response = ResponseEntity.class)
+    })
     public ResponseEntity<List<Position>> getAll() {
-        List<Position> positionsList = positionService.findAll();
-        if(positionsList == null || positionsList.isEmpty()){
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        try{
+            List<Position> positionsList = positionService.findAll();
+            if(positionsList == null || positionsList.isEmpty()){
+                return new ResponseEntity(HttpStatus.NO_CONTENT);
+            }
+            return ResponseEntity.ok(positionsList);
+        }catch(Exception e){
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return ResponseEntity.ok(positionsList);
     }
 
     @PostMapping("/permissao/")
+    @ApiOperation(
+            value = "Alterar as permissões de acesso de um cargo no sistema e informar aos usuários com o cargo alterado sobre as permissões",
+            tags = {"Cargos"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse( code = 200, message= "Sucesso", response = Boolean.class),
+            @ApiResponse( code = 500, message= "Erro", response = ResponseEntity.class)
+    })
     public ResponseEntity<Boolean> updatePermissaoCampo(
             @RequestBody PositionPermissionDTO positionPermissionDTO
     ) {

@@ -30,7 +30,7 @@ public class ProductService
     @Override
     public Optional<Product> save(Product entity) {
         if(entity.getId() != null && entity.getLote() != null){
-            Product currentProduct = productRepository.findById(entity.getId()).get();
+            Product currentProduct = productRepository.consultaPorId(entity.getId());
             Long qtdProduct = currentProduct.getQtd_disponivel();
             for (Batch lote : entity.getLote()){
                 if(lote.getId() == null){
@@ -44,7 +44,11 @@ public class ProductService
 
     @Override
     public Optional<Product> findById(long id) {
-        return Optional.of(productRepository.findById(id));
+        return productRepository.findById(id);
+    }
+
+    public Product consultaPorId(long id) {
+        return productRepository.consultaPorId(id);
     }
 
     @Override

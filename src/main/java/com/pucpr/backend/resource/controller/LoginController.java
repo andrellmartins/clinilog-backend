@@ -8,7 +8,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.pucpr.backend.config.MailSender;
 import com.pucpr.backend.model.tables.Person;
 import com.pucpr.backend.model.tables.User;
-import io.swagger.annotations.Authorization;
+import io.swagger.annotations.*;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,10 +22,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger.readers.operation.ResponseHeaders;
 
 import javax.mail.Address;
@@ -44,8 +41,12 @@ import java.util.List;
 
 import static com.pucpr.backend.config.SecurityConstants.*;
 import static com.pucpr.backend.config.SecurityConstants.SECRET;
-
-@Controller
+@RestController
+@Api(
+        value = "Login",
+        description = "Fazer Login no sistema e permitir acesso as outras atividades..",
+        tags = "Login"
+)
 @RequestMapping(SIGN_UP_URL)
 public class LoginController {
 
@@ -59,38 +60,51 @@ public class LoginController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> login(
+    @ApiOperation(
+            value = "Fazer Login no sistema e retornar o token de acesso",
+            tags = {"Login"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse( code = 200, message= "Sucesso", response = Person.class),
+            @ApiResponse( code = 401, message= "Login mal sucedido", response = ResponseEntity.class),
+            @ApiResponse( code = 500, message= "Erro", response = ResponseEntity.class)
+    })
+    public ResponseEntity<Person> login(
         @RequestBody User user
     ) {
-        Authentication auth = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                user.getLogin(),
-                user.getPassword(),
-                new ArrayList<>()
-            )
-        );
+        try{
+            Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                    user.getLogin(),
+                    user.getPassword(),
+                    new ArrayList<>()
+                )
+            );
 
 
-        if(auth.isAuthenticated()){
-            Person currentUser = (Person) auth.getPrincipal();
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            if(auth.isAuthenticated()){
+                Person currentUser = (Person) auth.getPrincipal();
+                SecurityContextHolder.getContext().setAuthentication(auth);
 
-            /* howtosendmail
-            try {
-                List<String> emails = new ArrayList<String>();
-                emails.add("dudu020300@gmail.com");
-                // Set To: header field of the header.
-                mailSender.sendMail("<b>Você<b> <br/><br/><br/> logou no clinilog","Foi você, não ?",emails);
-            } catch (MessagingException mex) {
-                mex.printStackTrace();
+                /* howtosendmail
+                try {
+                    List<String> emails = new ArrayList<String>();
+                    emails.add("dudu020300@gmail.com");
+                    // Set To: header field of the header.
+                    mailSender.sendMail("<b>Você<b> <br/><br/><br/> logou no clinilog","Foi você, não ?",emails);
+                } catch (MessagingException mex) {
+                    mex.printStackTrace();
+                }
+                */
+
+                return ResponseEntity.ok()
+                        .header(HEADER_STRING,TOKEN_PREFIX + generateJWTToken(currentUser))
+                        .body(currentUser);
+            }else{
+                return new ResponseEntity(HttpStatus.UNAUTHORIZED);
             }
-            */
-
-            return ResponseEntity.ok()
-                    .header(HEADER_STRING,TOKEN_PREFIX + generateJWTToken(currentUser))
-                    .body(currentUser);
-        }else{
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }catch(Exception e){
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
