@@ -9,7 +9,6 @@ import java.util.List;
 public class ReportProductMovementDTO{
     private List<Product> produtos;
     private List<Batch> lotes;
-    private boolean conciliar_lote;
     private Date data_inicio;
     private Date data_fim;
 
@@ -27,14 +26,6 @@ public class ReportProductMovementDTO{
 
     public void setLotes(List<Batch> lotes) {
         this.lotes = lotes;
-    }
-
-    public boolean isConciliar_lote() {
-        return conciliar_lote;
-    }
-
-    public void setConciliar_lote(boolean conciliar_lote) {
-        this.conciliar_lote = conciliar_lote;
     }
 
     public Date getData_inicio() {

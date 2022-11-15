@@ -1,9 +1,6 @@
 package com.pucpr.backend.model.tables;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,7 +12,6 @@ import java.util.List;
 
 @Entity
 @Table(name="Produto")
-@DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 public class Product  {
 
@@ -60,6 +56,14 @@ public class Product  {
     @OneToOne(mappedBy = "produto", cascade = CascadeType.ALL)
     @JsonManagedReference("ProductMedicine(id_produto)")
     private Medicine medicamento;
+
+    @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+            property  = "produto",
+            scope     = RecordsItems[].class
+    )
+    private List<RecordsItems> recordsItems;
+
 
     @PrePersist
     protected void prePersistConfigChild(){
@@ -156,6 +160,11 @@ public class Product  {
         this.qtd_minima = qtd_minima;
     }
 
+    public List<RecordsItems> getRecordsItems() {
+        return recordsItems;
+    }
 
-
+    public void setRecordsItems(List<RecordsItems> recordsItems) {
+        this.recordsItems = recordsItems;
+    }
 }

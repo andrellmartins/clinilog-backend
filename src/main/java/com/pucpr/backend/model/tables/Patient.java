@@ -1,6 +1,7 @@
 package com.pucpr.backend.model.tables;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -19,6 +20,7 @@ public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToOne
     @JoinColumn(name = "id_pessoa", referencedColumnName = "id")
     @JsonBackReference("PersonPatient(id_pessoa)")
@@ -32,6 +34,11 @@ public class Patient {
     @NotEmpty
     @NotNull
     private Insurance convenio;
+
+    @OneToOne(mappedBy = "patient", cascade = {CascadeType.ALL, CascadeType.PERSIST}, fetch=FetchType.EAGER)
+    @JoinColumn(name = "id_patient")
+    @JsonManagedReference("MedicalRecordsPatient(id_patient)")
+    private MedicalRecords medicalRecords;
 
     public Person getPessoa() {
         return pessoa;
@@ -57,5 +64,11 @@ public class Patient {
         this.id = id;
     }
 
+    public MedicalRecords getMedicalRecords() {
+        return medicalRecords;
+    }
 
+    public void setMedicalRecords(MedicalRecords medicalRecords) {
+        this.medicalRecords = medicalRecords;
+    }
 }
