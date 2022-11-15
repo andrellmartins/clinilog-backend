@@ -30,11 +30,6 @@ public class PositionController {
 
     private MailSender mailSender = new MailSender();
 
-    @GetMapping(value = "/{id}")
-    public Object getById(@PathVariable long id) {
-        return positionService.findById(id);
-    }
-
     @GetMapping(value = "/")
     public ResponseEntity<List<Position>> getAll() {
         List<Position> positionsList = positionService.findAll();
@@ -42,13 +37,6 @@ public class PositionController {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
         return ResponseEntity.ok(positionsList);
-    }
-
-    @PostMapping("/")
-    public ResponseEntity<Position> save(
-            @RequestBody Position position) {
-        positionService.save(position) ;
-        return ResponseEntity.ok().body(position);
     }
 
     @PostMapping("/permissao/")
@@ -84,16 +72,4 @@ public class PositionController {
         return ResponseEntity.ok(true);
     }
 
-    @PutMapping("/")
-    public ResponseEntity<Position> update(
-            @RequestBody Position position) {
-        positionService.save(position);
-        return ResponseEntity.ok().body(position);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable long id) {
-        positionService.deleteById(id);
-        return ResponseEntity.ok().body("Position " + id + " excluded");
-    }
 }

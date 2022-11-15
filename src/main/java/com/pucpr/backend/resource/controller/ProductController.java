@@ -40,13 +40,6 @@ public class ProductController {
         return ResponseEntity.ok().body(savedProduct.get());
     }
 
-    @PutMapping("/")
-    public ResponseEntity<Product> update(
-            @RequestBody Product product) {
-        productService.save(product);
-        return ResponseEntity.ok().body(product);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable long id) {
         Optional<Product> pSearch = productService.findById(id);

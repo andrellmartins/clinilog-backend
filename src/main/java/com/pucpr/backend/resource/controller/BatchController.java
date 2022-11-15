@@ -22,30 +22,6 @@ public class BatchController {
     @Autowired
     private BatchService batchService;
 
-    @GetMapping(value = "/")
-    @ApiResponses(value={
-        @ApiResponse(code = 200, message="Sucesso", response = ResponseBatchSuccess.class),
-        @ApiResponse(code = 500, message="Erro", response = ResponseBatchError.class)
-    })
-    public ResponseEntity<ResponseBatch> getAll() {
-        try{
-            ResponseBatchSuccess responseBatch = new ResponseBatchSuccess();
-            responseBatch.batches = batchService.findAll();
-            if(responseBatch.batches == null || responseBatch.batches.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return ResponseEntity.ok(responseBatch);
-        }catch(Exception e){
-            ResponseBatchError responseBatch = new ResponseBatchError();
-            responseBatch.exception = e;
-            return new ResponseEntity<>(responseBatch,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping(value = "/{id}")
-    public Object getById(@PathVariable long id) {
-        return batchService.findById(id);
-    }
 
     @PostMapping("/")
     public ResponseEntity<Batch> save(
@@ -54,16 +30,4 @@ public class BatchController {
         return ResponseEntity.ok().body(batch);
     }
 
-    @PutMapping("/")
-    public ResponseEntity<Batch> update(
-            @RequestBody Batch batch) {
-        batchService.save(batch);
-        return ResponseEntity.ok().body(batch);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable long id) {
-        batchService.deleteById(id);
-        return ResponseEntity.ok().body("Batch " + id + " excluded");
-    }
 }
