@@ -57,9 +57,9 @@ public class Product  {
     @JsonManagedReference("ProductMedicine(id_produto)")
     private Medicine medicamento;
 
-    @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-            property  = "produto",
+            property  = "product",
             scope     = RecordsItems[].class
     )
     private List<RecordsItems> recordsItems;

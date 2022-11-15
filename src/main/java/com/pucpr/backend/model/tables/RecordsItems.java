@@ -14,10 +14,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name="RecordItems", uniqueConstraints = {
-        @UniqueConstraint(name = "USER_UNIQUE_LOGIN", columnNames = {"login"}),
-        @UniqueConstraint(name = "USER_UNIQUE_ID_PESSOA", columnNames = {"id_pessoa"})
-})
+@Table(name="RecordItems")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"dtCreation", "dtUpdate"},
         allowGetters = true)
@@ -38,12 +35,24 @@ public class RecordsItems implements Serializable {
     @NotNull
     private Product product;
 
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name="id_record")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+            property  = "record",
+            scope     = Records.class
+    )
+    @NotEmpty
+    @NotNull
+    private Records record;
+
     @ManyToOne
     @JoinColumn(name="id_recordType", referencedColumnName = "id")
     @JsonBackReference("RecordsTypeRecords(id_recordType)")
     @NotEmpty
     @NotNull
     private RecordType type;
+
+
 
     public Long getId() {
         return id;

@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.pucpr.backend.config.MailSender;
 import com.pucpr.backend.resource.service.UserService;
 import com.pucpr.backend.model.tables.User;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.Authorization;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +21,11 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@Api(
+        value = "/user",
+        description = "Gerenciar os dados dos usuários do sistema.",
+        tags = "user"
+)
 @RequestMapping("/user")
 public class UserController {
 
@@ -38,6 +42,14 @@ public class UserController {
     }
 
     @GetMapping("")
+    @ApiOperation(
+            value = "Consultar todos os usuários do sistema",
+            tags = {"user"}
+    )
+    @ApiResponses(value = {
+        @ApiResponse( code = 200, message= "Sucesso", response = User[].class),
+        @ApiResponse( code = 500, message= "Erro", response = ResponseEntity.class)
+    })
     public List<User> getUsers() {
         return userService.findAll();
     }
