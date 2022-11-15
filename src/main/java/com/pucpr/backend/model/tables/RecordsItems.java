@@ -38,8 +38,8 @@ public class RecordsItems implements Serializable {
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name="id_record")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-            property  = "record",
-            scope     = Records.class
+            property  = "recordItems",
+            scope     = RecordsItems[].class
     )
     @NotEmpty
     @NotNull
@@ -68,5 +68,21 @@ public class RecordsItems implements Serializable {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Records getRecord() {
+        return record;
+    }
+
+    public void setRecord(Records record) {
+        this.record = record;
+    }
+
+    public RecordType getType() {
+        return type;
+    }
+
+    public void setType(RecordType type) {
+        this.type = type;
     }
 }

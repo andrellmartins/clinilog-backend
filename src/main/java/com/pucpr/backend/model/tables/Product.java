@@ -57,14 +57,6 @@ public class Product  {
     @JsonManagedReference("ProductMedicine(id_produto)")
     private Medicine medicamento;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-            property  = "product",
-            scope     = RecordsItems[].class
-    )
-    private List<RecordsItems> recordsItems;
-
-
     @PrePersist
     protected void prePersistConfigChild(){
         if(this.medicamento != null) {
@@ -160,11 +152,4 @@ public class Product  {
         this.qtd_minima = qtd_minima;
     }
 
-    public List<RecordsItems> getRecordsItems() {
-        return recordsItems;
-    }
-
-    public void setRecordsItems(List<RecordsItems> recordsItems) {
-        this.recordsItems = recordsItems;
-    }
 }

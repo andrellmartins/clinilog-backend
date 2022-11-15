@@ -35,10 +35,6 @@ public class Patient {
     @NotNull
     private Insurance convenio;
 
-    @OneToOne(mappedBy = "patient", cascade = {CascadeType.ALL, CascadeType.PERSIST}, fetch=FetchType.EAGER)
-    @JoinColumn(name = "id_patient")
-    @JsonManagedReference("MedicalRecordsPatient(id_patient)")
-    private MedicalRecords medicalRecords;
 
     public Person getPessoa() {
         return pessoa;
@@ -64,11 +60,4 @@ public class Patient {
         this.id = id;
     }
 
-    public MedicalRecords getMedicalRecords() {
-        return medicalRecords;
-    }
-
-    public void setMedicalRecords(MedicalRecords medicalRecords) {
-        this.medicalRecords = medicalRecords;
-    }
 }
